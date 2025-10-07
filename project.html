@@ -152,12 +152,21 @@
   </header>
 
   <div id="loginBox">
-    <h2>تسجيل الدخول</h2>
-    <input type="text" id="username" placeholder="اسم المستخدم"><br>
-    <input type="password" id="password" placeholder="كلمة السر"><br>
-    <button onclick="login()">تسجيل الدخول</button>
-    <p><a href="#" onClick="guestLogin()">🎓 دخول كطالب بدون حساب</a></p>
-  </div>
+  <h2>تسجيل الدخول</h2>
+  <input type="text" id="username" placeholder="اسم المستخدم"><br>
+  <input type="password" id="password" placeholder="كلمة السر"><br>
+  <button onclick="login()">تسجيل الدخول</button>
+  <p><a href="#" onClick="guestLogin()">🎓 دخول كطالب بدون حساب</a></p>
+
+  <!-- زر الرجوع للصفحة الرئيسية -->
+  <p>
+    <a href="home.html">
+      <button style="padding:6px 12px; font-size:0.85em; border-radius:15px; border:2px solid #00ffe0; background:none; color:#00ffe0; cursor:pointer; transition:0.3s;">
+        🏠 العودة للرئيسية
+      </button>
+    </a>
+  </p>
+</div>
 
   <div id="uploadBox" class="hidden">
     <h3>🔒opera رفع محاضرات جديدة (أدمن فقط) متصفح  للموبايل</h3>
@@ -356,3 +365,4 @@
 </body>
 
 </html>
+

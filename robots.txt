@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://imado741.github.io/project2/sitemap.xml

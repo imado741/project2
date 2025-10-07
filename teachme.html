@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>علمني | Teach Me - تسجيل الدخول</title>
+  <style>
+    body {
+      font-family: "Cairo", sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { text-shadow: 0 0 15px #00ffe0; margin-bottom: 30px; font-size: 1.8em; }
+    input, button {
+      width: 90%;
+      max-width: 300px;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-size: 1em;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    button {
+      border: 2px solid #00ffe0;
+      background: none;
+      color: #00ffe0;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #00ffe0;
+      color: #0f2027;
+      transform: scale(1.05);
+    }
+    a { color: #00ffe0; text-decoration: none; font-size: 0.9em; display: inline-block; margin-top: 10px; }
+    #welcomeBox {
+      width: 90%;
+      max-width: 350px;
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #00ffe0;
+    }
+    #loginBox {
+      width: 100%;
+      max-width: 350px;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #00ffe0;
+    }
+    @media (max-width : 253px ){
+      h1 { font-size: 1.5em; }
+      input, button { font-size: 0.95em; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💻 علمني انا سنة اولى | تسجيل الدخول&nbsp; قيد الاصلاح</h1>
+  <p>&nbsp;</p>
+<div id="loginBox">
+  <input type="text" id="username" placeholder="اسم المستخدم"><br>
+    <input type="password" id="password" placeholder="كلمة السر"><br>
+    <button onclick="login()">تسجيل الدخول</button>
+    <p><a href="#" onclick="guestLogin()">🎓 دخول كطالب بدون حساب</a></p>
+  </div>
+
+  <div id="welcomeBox" style="display:none;">
+    <h2>🎉 مرحباً بك!</h2>
+    <p id="roleText"></p>
+    <button onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      if(user === "teacher" && pass === "teacher") {
+        localStorage.setItem("role", "admin");
+        showWelcome(true);
+      } else if(user && pass) {
+        localStorage.setItem("role", "user");
+        showWelcome(false);
+      } else {
+        alert("❗ أدخل اسم المستخدم وكلمة السر");
+      }
+    }
+
+    function guestLogin() {
+      localStorage.setItem("role", "user");
+      showWelcome(false);
+    }
+
+    function showWelcome(isAdmin) {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("welcomeBox").style.display = "block";
+      document.getElementById("roleText").textContent = isAdmin ? "أنت مسجل كأدمن" : "أنت مسجل كطالب";
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    window.onload = () => {
+      const role = localStorage.getItem("role");
+      if(role === "admin") showWelcome(true);
+      else if(role === "user") showWelcome(false);
+    }
+  </script>
+
+</body>
+</html>

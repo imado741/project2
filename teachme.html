@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: "Cairo", sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #3a3a3a, #4e4e4e);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -18,10 +18,17 @@
       padding: 20px;
       text-align: center;
     }
-    h1 { text-shadow: 0 0 15px #00ffe0; margin-bottom: 30px; font-size: 1.8em; }
-    input, button {
+
+    h1 { 
+      text-shadow: 0 0 15px #00ffd5; 
+      margin-bottom: 30px; 
+      font-size: 2em;
+      color: #fff;
+    }
+
+    input, button, textarea {
       width: 90%;
-      max-width: 300px;
+      max-width: 350px;
       padding: 14px;
       margin: 10px 0;
       border-radius: 10px;
@@ -29,53 +36,63 @@
       font-size: 1em;
       text-align: center;
       box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
+
     button {
-      border: 2px solid #00ffe0;
+      border: 2px solid #00ffd5;
       background: none;
-      color: #00ffe0;
+      color: #00ffd5;
       cursor: pointer;
       border-radius: 25px;
       transition: 0.3s;
     }
+
     button:hover {
-      background: #00ffe0;
-      color: #0f2027;
+      background: #00ffd5;
+      color: #4e4e4e;
       transform: scale(1.05);
     }
-    a { color: #00ffe0; text-decoration: none; font-size: 0.9em; display: inline-block; margin-top: 10px; }
+
+    a { 
+      color: #00ffd5; 
+      text-decoration: none; 
+      font-size: 0.9em; 
+      display: inline-block; 
+      margin-top: 10px; 
+    }
+
     #welcomeBox {
       width: 90%;
       max-width: 350px;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.5);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 0 15px #00ffe0;
+      box-shadow: 0 0 15px #00ffd5;
     }
-    #loginBox {
+
+    #loginBox, #linksBox {
       width: 100%;
       max-width: 350px;
       background: rgba(255,255,255,0.1);
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 0 15px #00ffe0;
-    }
-    #linksBox {
-      display: none;
-      width: 90%;
-      max-width: 350px;
-      background: rgba(0,0,0,0.3);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #00ffe0;
+      box-shadow: 0 0 15px #00ffd5;
       margin-top: 20px;
     }
+
+    #linksBox {
+      display: none;
+    }
+
     #linksBox ul {
       list-style: none;
       padding: 0;
     }
+
     #linksBox li {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.2);
       margin: 5px 0;
       padding: 10px;
       border-radius: 10px;
@@ -83,22 +100,36 @@
       justify-content: space-between;
       align-items: center;
     }
+
     #linksBox li button {
       background: none;
       color: #ff4d4d;
       border: none;
       cursor: pointer;
+      font-size: 1.1em;
+      transition: color 0.3s;
     }
-    @media (max-width : 253px ){
+
+    #linksBox li button:hover {
+      color: #ff3333;
+    }
+
+    @media (max-width: 768px) {
       h1 { font-size: 1.5em; }
-      input, button { font-size: 0.95em; padding: 12px; }
+      input, button, textarea { font-size: 1em; padding: 12px; }
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.2em; }
+      input, button, textarea { font-size: 0.9em; padding: 10px; }
     }
   </style>
 </head>
 <body>
 
-  <h1>💻 علمني انا سنة اولى | تسجيل الدخول&nbsp; قيد الاصلاح</h1>
-  <p>&nbsp;</p>
+  <h1>💻 علمني | تسجيل الدخول</h1>
+
+  <!-- Login Form -->
   <div id="loginBox">
     <input type="text" id="username" placeholder="اسم المستخدم"><br>
     <input type="password" id="password" placeholder="كلمة السر"><br>
@@ -106,6 +137,7 @@
     <p><a href="#" onclick="guestLogin()">🎓 دخول كطالب بدون حساب</a></p>
   </div>
 
+  <!-- Welcome Box -->
   <div id="welcomeBox" style="display:none;">
     <h2>🎉 مرحباً بك!</h2>
     <p id="roleText"></p>
@@ -133,10 +165,10 @@
       const user = document.getElementById("username").value.trim();
       const pass = document.getElementById("password").value.trim();
 
-      if(user === "teacher" && pass === "teacher") {
+      if (user === "teacher" && pass === "teacher") {
         localStorage.setItem("role", "admin");
         showWelcome(true);
-      } else if(user && pass) {
+      } else if (user && pass) {
         localStorage.setItem("role", "user");
         showWelcome(false);
       } else {
@@ -153,13 +185,8 @@
       document.getElementById("loginBox").style.display = "none";
       document.getElementById("welcomeBox").style.display = "block";
       document.getElementById("roleText").textContent = isAdmin ? "أنت مسجل كأدمن" : "أنت مسجل كطالب";
-      if (isAdmin) {
-        document.getElementById("linksBox").style.display = "block";
-        displayLinks();
-      } else {
-        document.getElementById("linksBox").style.display = "none";
-        displayLinks(); // Students will also see the links
-      }
+      document.getElementById("linksBox").style.display = "block"; 
+      displayLinks(); 
     }
 
     function logout() {
@@ -167,7 +194,6 @@
       location.reload();
     }
 
-    // Handling links management for Admin
     async function addLink() {
       const title = document.getElementById("linkTitle").value.trim();
       const url = document.getElementById("linkUrl").value.trim();
@@ -181,7 +207,7 @@
         if (error) {
           alert("❗ خطأ في إضافة الرابط");
         } else {
-          displayLinks(); // Update the links for all users (admin and students)
+          displayLinks(); 
         }
       } else {
         alert("❗ جميع الحقول مطلوبة");
@@ -198,6 +224,7 @@
       } else {
         const linksList = document.getElementById("linksList");
         linksList.innerHTML = "";
+
         data.forEach(link => {
           const li = document.createElement("li");
           li.innerHTML = `

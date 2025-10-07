@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 🔹 مهم للجوال -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>موقعي الرائع</title>
   <style>
     body {
@@ -44,13 +44,11 @@
       max-width: 400px;
     }
 
-    /* Tooltip container */
     .tooltip {
       position: relative;
       display: inline-block;
     }
 
-    /* Button style */
     .tooltip a button {
       background: none;
       border: 2px solid #00ffe0;
@@ -70,7 +68,6 @@
       transform: scale(1.05);
     }
 
-    /* Tooltip text */
     .tooltip .tooltiptext {
       visibility: hidden;
       width: 160px;
@@ -97,6 +94,123 @@
       top: 100%;
       left: 50%;
       margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #00ffe0 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+
+    #visitor-count {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #00ffe0;
+      text-shadow: 0 0 10px #00ffe0;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #00ffe0; }
+      to { text-shadow: 0 0 25px #00ffe0, 0 0 5px #00b3a1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.6em; }
+      p { font-size: 1em; }
+      .tooltip a button {
+        width: 100%;
+        padding: 12px;
+        font-size: 0.95em;
+      }
+      .btn-container { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>مرحباً بك في موقعي الرائع 🌌</h1>
+  <p>اضغط على أي زر لتصفح الموقع 👇</p>
+
+  <div class="btn-container">
+    <div class="tooltip">
+      <a href="home.html"><button>🏠 الرئيسية</button></a>
+      <span class="tooltiptext">الصفحة الرئيسية</span>
+    </div>
+    <div class="tooltip">
+      <a href="about.html"><button>ℹ️ حول</button></a>
+      <span class="tooltiptext">تعرف علينا</span>
+    </div>
+    <div class="tooltip">
+      <a href="project.html"><button>💻 pdfs </button></a>
+      <span class="tooltiptext">عرض المشاريع</span>
+    </div>
+    <div class="tooltip">
+      <a href="contact.html"><button>📧 تواصل</button></a>
+      <span class="tooltiptext">تواصل معنا</span>
+    </div>
+    <div class="tooltip">
+      <a href="teachme.html"><button>📚 علمني</button></a>
+      <span class="tooltiptext">تعلم معنا</span>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 موقعي الرائع | تصميم: عماد
+    <div id="visitor-count">جارٍ تحميل عدد الزوار...</div>
+  </footer>
+
+  <!-- Supabase JS -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    const supabaseUrl = "https://fwshguzeoyykryevnbhd.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3c2hndXplb3l5a3J5ZXZuYmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3NjA1NTIsImV4cCI6MjA3NTMzNjU1Mn0.bitpKeXlov7tlzzEsQLEBwzz0Rpzrb0LgugtPKpyIr4";
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function updateVisitorCount() {
+      try {
+        // جلب العدد الحالي
+        const { data, error } = await supabase
+          .from("visitors")
+          .select("count")
+          .eq("id", 1)
+          .single();
+        if (error) throw error;
+
+        const newCount = (data?.count || 0) + 1;
+
+        // تحديث العدد في Supabase
+        const { error: updateError } = await supabase
+          .from("visitors")
+          .update({ count: newCount })
+          .eq("id", 1);
+        if (updateError) throw updateError;
+
+        // عرض العدد في الصفحة
+        document.getElementById("visitor-count").textContent = "عدد الزوار: " + newCount;
+      } catch (err) {
+        console.error("خطأ في تحديث العداد:", err.message);
+        document.getElementById("visitor-count").textContent = "عدد الزوار غير متوفر حالياً";
+      }
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    updateVisitorCount();
+  </script>
+</body>
+</html>      margin-left: -5px;
       border-width: 5px;
       border-style: solid;
       border-color: #00ffe0 transparent transparent transparent;
@@ -173,3 +287,4 @@
   <footer>© 2025 موقعي الرائع | تصميم: عماد</footer>
 </body>
 </html>
+

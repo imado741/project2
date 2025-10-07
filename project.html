@@ -28,22 +28,23 @@
 
     .logout-btn {
   position: absolute;
-  left: 15px;
+  right: 15px;         /* بدل left صار right */
   top: 15px;
   background: none;
   border: 2px solid #00ffe0;
   color: #00ffe0;
-  padding: 4px 10px;       /* تقليل الحشو */
-  border-radius: 15px;     /* تقليل الاستدارة */
+  padding: 4px 10px;   /* حجم أصغر */
+  border-radius: 15px;
   cursor: pointer;
   transition: 0.3s;
-  font-size: 0.75em;       /* تصغير حجم الخط */
-    }
+  font-size: 0.75em;   /* حجم الخط أصغر */
+}
 
-    .logout-btn:hover {
-      background: #00ffe0;
-      color: #0f2027;
-    }
+.logout-btn:hover {
+  background: #00ffe0;
+  color: #0f2027;
+  transform: scale(1.05);
+}
 
     .hidden { display: none; }
 
@@ -365,5 +366,6 @@
 </body>
 
 </html>
+
 
 

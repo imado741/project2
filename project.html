@@ -27,21 +27,29 @@
     }
 
     .logout-btn {
-  position: absolute;
+  position: fixed;
   right: 10px;
   top: 10px;
   background: none;
   border: 1.5px solid #00ffe0;
   color: #00ffe0;
-  padding: 2px 6px; /* حواف خفيفة */
-  border-radius: 12px;
+  padding: 4px 6px;   /* ↓ صغّر العرض فقط */
+  border-radius: 15px;
   cursor: pointer;
   transition: 0.3s;
-  font-size: 0.9em;
+  font-size: 0.75em;
   z-index: 9999;
-  width: fit-content; /* يجعل الزر بنفس حجم النص */
-  white-space: nowrap; /* يمنع انقسام النص */
-    }
+}
+
+/* 📱 للأندرويد أو الشاشات الصغيرة */
+@media (max-width: 600px) {
+  .logout-btn {
+    font-size: 0.7em;
+    padding: 3px 5px;  /* ↓ تصغير إضافي للعرض */
+    right: 8px;
+    top: 8px;
+  }
+}
 
     .logout-btn:hover {
       background: #00ffe0;
@@ -358,6 +366,7 @@
   </script>
 </body>
 </html>
+
 
 
 

@@ -187,24 +187,25 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    
     /* 🔹 كل الأكواد السابقة تبقى نفسها تمامًا بدون أي تعديل */
     const supabaseUrl = "https://fwshguzeoyykryevnbhd.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3c2hndXplb3l5a3J5ZXZuYmhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk3NjA1NTIsImV4cCI6MjA3NTMzNjU1Mn0.bitpKeXlov7tlzzEsQLEBwzz0Rpzrb0LgugtPKpyIr4";
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     let selectedForDelete = [];
+    
+    const cloudinaryCloudName = "c-a2b7eb9e7632deac9cd84f3c741f98"; // اسم السحابة من داشبوردك
+const cloudinaryPreset = "ml_default"; // الاسم الموجود في الـ Dashboard
+const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/auto/upload`;
+    
     // رفع عدة ملفات دفعة واحدة
     async function uploadMultipleLectures() {
   const files = document.getElementById("lectureFiles").files;
   const progressContainer = document.getElementById("progressContainer");
-  progressContainer.innerHTML = ""; // تنظيف أي شريط قديم
-
+  progressContainer.innerHTML = "";
   if (!files.length) return alert("📁 اختر ملفات أولاً");
 
   for (const file of files) {
-    const cleanName = file.name.replace(/[^\w.\-]+/g, "_");
-    const filePath = `${Date.now()}_${cleanName}`;
-
-    // إنشاء شريط تقدم
     const progressBar = document.createElement("div");
     progressBar.style.width = "0%";
     progressBar.style.height = "20px";
@@ -220,31 +221,20 @@
     progressContainer.appendChild(progressBar);
 
     try {
-      const { error } = await supabase.storage
-        .from("lectures")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: file.type || "application/pdf",
-          onUploadProgress: (progressEvent) => {
-            const percent = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-            progressBar.style.width = percent + "%";
-            progressBar.textContent = `${percent}% - ${file.name}`;
-          },
-        });
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", cloudinaryPreset); // تأكد من اسم الـ preset
 
-      if (error) throw error;
+      const response = await fetch(uploadUrl, { method: "POST", body: formData });
+      const result = await response.json();
 
-      const { data: publicData } = supabase.storage
-        .from("lectures")
-        .getPublicUrl(filePath);
-
-      await supabase.from("lectures").insert([
-        { title: file.name, file_url: publicData.publicUrl },
-      ]);
-
-      progressBar.style.width = "100%";
-      progressBar.textContent = `✅ تم رفع ${file.name}`;
+      if (result.secure_url) {
+        await supabase.from("lectures").insert([{ title: file.name, file_url: result.secure_url }]);
+        progressBar.style.width = "100%";
+        progressBar.textContent = `✅ تم رفع ${file.name}`;
+      } else {
+        throw new Error("فشل الرفع إلى Cloudinary");
+      }
     } catch (err) {
       console.error(err);
       progressBar.style.background = "red";
@@ -253,7 +243,8 @@
   }
 
   showLectures();
-}
+    }
+    
 
     // عرض المحاضرات
     async function showLectures() {
@@ -369,6 +360,7 @@
 </body>
 
 </html>
+
 
 
 

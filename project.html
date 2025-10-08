@@ -33,14 +33,15 @@
   background: none;
   border: 1.5px solid #00ffe0;
   color: #00ffe0;
-  width: 25px; /* ↓ عرض محدد */
-  text-align: center;
+  padding: 2px 6px; /* حواف خفيفة */
   border-radius: 12px;
   cursor: pointer;
   transition: 0.3s;
   font-size: 0.9em;
   z-index: 9999;
-}
+  width: fit-content; /* يجعل الزر بنفس حجم النص */
+  white-space: nowrap; /* يمنع انقسام النص */
+    }
 
     .logout-btn:hover {
       background: #00ffe0;
@@ -357,6 +358,7 @@
   </script>
 </body>
 </html>
+
 
 
 
